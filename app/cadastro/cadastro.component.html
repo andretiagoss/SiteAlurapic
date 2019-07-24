@@ -1,0 +1,97 @@
+<div class="container">
+    <h1 class="text-center">{{foto.titulo}}</h1>
+
+    <p *ngIf="mensagem.length" class="alert alert-info">{{mensagem}}</p>
+
+    <!-- Utilizado a diretiva submit do Angular para submeter um evento ao o formulário, 
+        executando dessa forma um fluxo de dados one-way databind, 
+        que vai da view para o modelo, chamando o método cadastrar(). 
+        O $event como parametro do método Cadastrar é para cancelar a submissão da pagina.
+    -->
+    <!-- <form #meuForm="ngForm" class="row" (submit)="cadastrar($event)"> -->
+
+    <!-- [formGroup]="meuForm": Diretiva para fazer a associação (one-way) do modelo pra view, 
+        da variavel meuForm criado no cadastro.component.ts  -->
+    <form [formGroup]="meuForm" class="row" (submit)="cadastrar($event)">
+        <div class="col-md-6">
+            <br>
+            <div class="form-group">
+                <label>Título</label>
+                <!-- 1) Método com two-way data binding: -->
+                
+                <!-- 
+                    (input)="foto.titulo = $event.target.value": associação unidirecional, que vai da view para o modelo.
+                     A cada evento gerado no input obtem o valor dele mesmo e atualiza a propriedade do modelo via associação unidirecional  
+                -->
+                
+                <!-- 
+                    [value]="foto.titulo": associação unidirecional (one-way databinding), que vai do modelo para view. 
+                    Usada para atribuir o valor inicial do input com o dado vindo do modelo 
+                -->
+                
+                <!-- 
+                    <input (input)="foto.titulo = $event.target.value" [value]="foto.titulo" class="form-control" autocomplete="off"> 
+                -->
+
+                <!-- 2) Método com ngModel () exige o "name" de cada input-->
+                <!-- [(ngModel)]="foto.titulo": Dispara atualização da view para o modelo (parenteses) e do modelo para a view (conchetes). -->
+                <!-- required: Diretiva para obrigar preenchimento do input -->
+                <!-- #titulo="ngModel": Criação de variavel para usá-la em validações-->
+                <!-- <input required #titulo="ngModel" name="titulo" [(ngModel)]="foto.titulo" class="form-control" autocomplete="off"> -->
+
+                <!-- formControlName="titulo": Diretiva para associar o input com o a propriedade do formGroup -->
+                <input formControlName="titulo" name="titulo" [(ngModel)]="foto.titulo" class="form-control" autocomplete="off">
+                
+                <!-- *ngIf="titulo.invalid": Diretiva para validar se a variavel titulo foi preenchida 
+                    e então determinar a exibição do span. É um tipo de validação orientada a template.-->
+                <!-- <span *ngIf="titulo.invalid" class="form-control alert-danger">
+                    Título obrigatório
+                </span> -->
+
+                <div *ngIf="meuForm.controls.titulo.invalid">
+                    <span *ngIf="meuForm.controls.titulo.errors.required" class="form-control alert-danger">
+                        Título obrigatório
+                    </span>
+
+                    <span *ngIf="meuForm.controls.titulo.errors.minlength" class="form-control alert-danger">
+                        Título deve ter no mínimo 4 caracteres
+                    </span>
+                </div>                
+            </div>
+
+            <div class="form-group">
+                <label>URL</label>
+
+                <input formControlName="url" name="url" [(ngModel)]="foto.url" class="form-control" autocomplete="off">
+
+                <span *ngIf="meuForm.controls.url.invalid" class="form-control alert-danger">
+                    URL obrigatória
+                </span>
+            </div>
+            
+            <div class="form-group">
+                <label>Descrição</label>
+                <textarea formControlName="descricao" name="descricao" [(ngModel)]="foto.descricao" class="form-control" autocomplete="off"></textarea>
+            </div>
+
+            <!-- [disabled]="meuForm.form.invalid": Diretiva para determinar se permite liberar o botão Salvar somente 
+                se formulário estiver valido, de acordo com a variavel criada no form (#meuForm). -->
+            <!-- <button type="submit" class="btn btn-primary" [disabled]="meuForm.form.invalid">
+                Salvar
+            </button> -->
+
+            <botao nome="Salvar" estilo="btn-primary" tipo="submit" [desabilitado]="meuForm.invalid"></botao>
+
+            <a [routerLink]="['']" class="btn btn-primary">Voltar</a>
+            <hr>
+
+        </div>
+
+        <div class="col-md-6">
+            <!-- <foto [url]="foto.url" [titulo]="foto.titulo"></foto> -->
+
+            <!-- One way com Angular Expression -->
+            <foto url="{{foto.url}}" titulo="{{foto.titulo}}"></foto>
+        </div>
+    </form>    
+</div>>

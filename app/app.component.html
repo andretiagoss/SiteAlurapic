@@ -1,0 +1,11 @@
+<!-- Menu da aplicação -->
+<nav class="navbar navbar-default">
+    <ul class="nav navbar-nav">
+        <li><a [routerLink]="['/cadastro']">Nova</a></li>
+        <li><a [routerLink]="['']">Home</a></li>
+    </ul>
+</nav>
+
+<!-- Diretiva do Angular para indicar que o conteudo dos componentes cadastro.component e listagem.component 
+    do sistema de rotas entram nesse html -->
+<router-outlet></router-outlet>

@@ -1,0 +1,50 @@
+<div class="jumbotron">
+    <h1 class="text-center">Alurapic</h1>
+</div>
+    
+<div class="container">
+
+    <p *ngIf="mensagem.length" class="alert alert-info">{{mensagem}}</p>
+
+    <div class="row">
+        <div class="col-md-12">
+            <form>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <!-- <a href="/cadastro" class="btn btn-primary"> -->
+                        <a [routerLink]="['/cadastro']" class="btn btn-primary">
+                            Nova foto
+                        </a>
+                    </span>
+                    <!-- input com a criação da variavel local #textoProcurado -->
+                    <!-- O Keyup=0 foi adicionado para disparar um evento assincrono apenas para renderizar a pagina com a listagem filtrada -->
+                    <input #textoProcurado (keyup)="0" class="form-control" placeholder="filtrar pelo título da foto">
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+
+    <!-- Diretiva do bootstrap para deixar o conteudo em uma linha -->
+    <div class="row"> 
+        <!-- Cria um loop (For) com a declaração da variavel foto sobre a lista (array de AppComponent) de fotos -->
+        <!-- Usa diretiva do boostrap para usar 2 colunas de 12. -->
+        <!-- usa o filtroPorTitulo passando como parametro a variavel local textoProcurado -->
+        <!-- usa o filtro ("|") uppercase para o valor do titulo. -->
+        <painel #painel *ngFor="let foto of fotos | filtroPorTitulo : textoProcurado.value" titulo="{{foto.titulo | uppercase}}" class="col-md-2">
+            <!-- envolve a foto num link para a pagina de alteração de fotos -->
+            <a [routerLink]="['/cadastro', foto._id]">
+                <foto url="{{foto.url}}" titulo="{{foto.titulo}}"></foto>
+            </a>            
+            <br>
+
+            <!-- <button class="btn btn-danger btn-block" (click)="remover(foto)">Remover</button> -->
+            
+            <!-- <botao nome="Remover" estilo="btn-danger btn-block" (acao)="remover(foto, painel)" confirmacao="true"></botao> -->
+                            
+            <botao nome="Remover" estilo="btn-danger btn-block" (acao)="modal.show()" [confirmacao]="false"></botao>
+            <modal #modal frase="Tem certeza que deseja remover esta foto?" (confirma)="remover(foto, painel)"></modal>
+
+        </painel>
+    </div>
+</div>
